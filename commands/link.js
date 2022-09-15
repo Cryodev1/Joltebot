@@ -9,7 +9,7 @@ module.exports.run = (client, message, args) => {
   }
   fetch("https://ch.tetr.io/api/users/" + args[0].toLowerCase(), settings).then(res => res.json()).then((json) => {
     if (!json.success) {
-      message.channel.send("Invalid username or api is down")
+      message.channel.send("Invalid username ")
       return;
     }
     if (args[0] == null) {
