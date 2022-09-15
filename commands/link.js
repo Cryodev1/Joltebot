@@ -9,18 +9,43 @@ module.exports.run = (client, message, args) => {
   }
   fetch("https://ch.tetr.io/api/users/" + args[0].toLowerCase(), settings).then(res => res.json()).then((json) => {
     if (!json.success) {
-      message.channel.send("Invalid username ")
+      message.channel.send("Invalid username")
       return;
     }
     if (args[0] == null) {
       message.channel.send("Invalid username or api is down")
       return;
     }
-    fetch("https://ch.tetr.io/api/news/user_" + json._id, settings).then(res => res.json()).then((json) => {
-      
+    let id = json.data.user._id
+    fetch("https://ch.tetr.io/api/news/user_" + id, settings).then(res => res.json()).then((json) => {
+      for (let thenew of json.data.news) {
+        if (thenew.type === "rankup") {
+          if (thenew.data.rank === "x") {
+            //u
+            if (message.member.roles.cache.has("599009446672465950")) {
+              message.member.roles.remove("599009446672465950");
+            }
+            //ss
+            if (message.member.roles.cache.has("599009915960426507")) {
+              message.member.roles.remove("599009915960426507");
+            }
+            if (!message.member.roles.cache.has("963734575379542036")) {
+              message.member.roles.add("963734575379542036")
+            }
+            break;
+          } else if (thenew.data.rank === "u") {
+            //ss
+            if (message.member.roles.cache.has("599009915960426507")) {
+              message.member.roles.remove("599009915960426507");
+            }
+            if (!message.member.roles.cache.has("599009446672465950") || !message.member.roles.cache.has("963734575379542036")) {
+              message.member.roles.add("599009446672465950")
+            }
+            break;
+          }
+        }
+      }
     })
-    console.log(args[0])
-    console.log(json.data.user.username);
     let rank = json.data.user.league.rank
     if (!rank) {
       message.channel.send("Invalid username or api is down")
@@ -28,7 +53,8 @@ module.exports.run = (client, message, args) => {
     }
     db.set(message.author.id, args[0])
     let hooman = message.member
-    message.channel.send(rank)
+    message.channel.send("Sucessfully linked to " + args[0] + "!")
+    message.react('👍')
     //x
     if (hooman.roles.cache.has("939931462621356042")) {
       hooman.roles.remove("939931462621356042");
