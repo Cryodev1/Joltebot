@@ -35,7 +35,7 @@ for (file of commands) {
 }
 
 client.on("messageCreate", message => {
-  if (message.content.startsWith(prefix) && (message.channel.id === "605943550579965952" || "1019694224695890050")) {
+  if (message.content.startsWith(prefix) && (message.channel.id === "891657659336523796" || "1019694224695890050")) {
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const commandName = args.shift()
     const command = client.commands.get(commandName)
