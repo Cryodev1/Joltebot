@@ -35,7 +35,7 @@ for (file of commands) {
 }
 
 client.on("messageCreate", message => {
-  if (message.content.startsWith(prefix) && (message.channel.id === "891657659336523796" || "1019694224695890050")) {
+  if (message.content.startsWith(prefix) && (message.channel.id === "891657659336523796" || (message.channel.id === "1019694224695890050" || (message.author.id === "353353241557204994")))) {
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const commandName = args.shift()
     const command = client.commands.get(commandName)
@@ -221,11 +221,21 @@ client.on("messageCreate", message => {
   }
 })
 
+db.list().then(keys => {
+  for (let key of keys) {
+    console.log(key)
+    db.get(key).then(value => {
+      console.log(value)
+    })
+  }
+})
 function update() {
   console.log("Updating!")
   db.list().then(keys => {
 
     for (let key of keys) {
+      console.log(key)
+      console.log(value)
       db.get(key).then(value => {
 
         fetch("https://ch.tetr.io/api/users/" + value, settings).then(res => res.json()).then((json) => {
@@ -410,6 +420,7 @@ timer = setInterval(function() {
 
 client.on("ready", () => {
   console.log("Initialized!")
+  client.user.setPresence({ activities: [{ name: 'with pain' }], status: 'dnd' }); 
 })
 
 client.login(token)

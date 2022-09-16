@@ -51,7 +51,7 @@ module.exports.run = (client, message, args) => {
       message.channel.send("Invalid username or api is down")
       return;
     }
-    db.set(message.author.id, args[0])
+    db.set(message.author.id, args[0].toLowerCase())
     let hooman = message.member
     message.channel.send("Sucessfully linked to " + args[0] + "!")
     message.react('👍')
