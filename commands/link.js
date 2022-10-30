@@ -17,10 +17,7 @@ module.exports.run = (client, message, args) => {
       return;
     }
     let id = json.data.user._id
-    fetch("https://ch.tetr.io/api/news/user_" + id, settings).then(res => res.json()).then((json) => {
-      for (let thenew of json.data.news) {
-        if (thenew.type === "rankup") {
-          if (thenew.data.rank === "x") {
+    if (json.data.user.league.toprank === "x") {
             //u
             if (message.member.roles.cache.has("599009446672465950")) {
               message.member.roles.remove("599009446672465950");
@@ -32,20 +29,15 @@ module.exports.run = (client, message, args) => {
             if (!message.member.roles.cache.has("963734575379542036")) {
               message.member.roles.add("963734575379542036")
             }
-            break;
-          } else if (thenew.data.rank === "u") {
-            //ss
-            if (message.member.roles.cache.has("599009915960426507")) {
-              message.member.roles.remove("599009915960426507");
-            }
-            if (!message.member.roles.cache.has("599009446672465950") && !message.member.roles.cache.has("963734575379542036")) {
-              message.member.roles.add("599009446672465950")
-            }
-            break;
-          }
-        }
+    } else if (json.data.user.league.toprank === "u") {
+      //ss
+      if (message.member.roles.cache.has("599009915960426507")) {
+        message.member.roles.remove("599009915960426507");
       }
-    })
+      if (!message.member.roles.cache.has("599009446672465950") && !message.member.roles.cache.has("963734575379542036")) {
+        message.member.roles.add("599009446672465950")
+      }
+    }
     let rank = json.data.user.league.rank
     if (!rank) {
       message.channel.send("Invalid username or api is down")
@@ -53,6 +45,14 @@ module.exports.run = (client, message, args) => {
     }
     db.set(message.author.id, args[0].toLowerCase())
     let hooman = message.member
+
+    db.list("block").then(keys => {
+      for(let key of keys) {
+        if(key.substring(5) === message.member.id) {
+          message.channel.send("Not allowed")
+        }
+      }
+    });
 
     switch (message.member.id) {
       case "292004672313753621":
@@ -65,8 +65,8 @@ module.exports.run = (client, message, args) => {
         message.channel.send("Cryowowowowowowodev")
         break;
       case "399563490127511562":
-        message.channel.send("spam 🚗 this 🚗 car 🚗 to 🚗 help 🚗 pidge 🚗 star (added)")
-        break;
+        message.channel.send("No")
+        return;
       case "707386809302122529":
         message.channel.send("Can't even 4-wide (added)")
         break;
@@ -118,36 +118,36 @@ module.exports.run = (client, message, args) => {
 
     message.react('👍')
     //x
-      if (hooman.roles.cache.has("939931462621356042") && rank !== "x") {
+      if (hooman.roles.cache.has("939931462621356042") && (rank !== "x")) {
         hooman.roles.remove("939931462621356042");
       }
       //u
-      if (hooman.roles.cache.has("939931461304328253") && rank !== "u") {
+      if (hooman.roles.cache.has("939931461304328253") && (rank !== "u")) {
         hooman.roles.remove("939931461304328253");
       }
       //ss
-      if (hooman.roles.cache.has("939931460348026930") && rank !== "ss") {
+      if (hooman.roles.cache.has("939931460348026930") && (rank !== "ss")) {
         hooman.roles.remove("939931460348026930");
 
       }
       //s+
-      if (hooman.roles.cache.has("939931458871631872") && rank !== "s+") {
+      if (hooman.roles.cache.has("939931458871631872") && (rank !== "s+")) {
         hooman.roles.remove("939931458871631872");
       }
       //s
-      if (hooman.roles.cache.has("939931457760153671") && rank !== "s") {
+      if (hooman.roles.cache.has("939931457760153671") && (rank !== "s")) {
         hooman.roles.remove("939931457760153671");
       }
       //s-
-      if (hooman.roles.cache.has("939931456589930537") && rank !== "s-") {
+      if (hooman.roles.cache.has("939931456589930537") && (rank !== "s-")) {
         hooman.roles.remove("939931456589930537");
       }
       //a+
-      if (hooman.roles.cache.has("939931455361015838") && rank !== "a+") {
+      if (hooman.roles.cache.has("939931455361015838") && (rank !== "a+")) {
         hooman.roles.remove("939931455361015838");
       }
       //a
-      if (hooman.roles.cache.has("939931454253715606") && rank !== "a") {
+      if (hooman.roles.cache.has("939931454253715606") && (rank !== "a")) {
         hooman.roles.remove("939931454253715606");
       }
       //a-
