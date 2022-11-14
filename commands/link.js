@@ -37,6 +37,12 @@ module.exports.run = (client, message, args) => {
       if (!message.member.roles.cache.has("599009446672465950") && !message.member.roles.cache.has("963734575379542036")) {
         message.member.roles.add("599009446672465950")
       }
+    } else {
+      if (!message.member.roles.cache.has("599009446672465950")) {
+        message.member.roles.add("599009446672465950")
+      }
+      
+      
     }
     let rank = json.data.user.league.rank
     if (!rank) {

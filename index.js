@@ -43,7 +43,6 @@ client.on("messageCreate", message => {
   if (message.content.startsWith(prefix) && (message.channel.id === "891657659336523796" || (message.channel.id === "1019694224695890050" || (message.author.id === "353353241557204994") || (message.author.id === "768426796361711646") || (message.channel.id === "605943550579965952")))) {
     if(message.content === ".forceupdate" && message.author.id === "353353241557204994") {
       update()
-      message.channel.send("Updating everyone lmao")
       return;
     }
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
@@ -222,37 +221,19 @@ client.on("messageCreate", message => {
   }
 })
 
-db.delete("453391694235435020")
-
-db.list().then(keys => {
-  for (let key of keys) {
-    db.get(key).then(value => {
-    if(value === "ungoy") {
-      db.delete(key)
-    }
-  })
-  }
-})
-
-/*
-
-db.list().then(keys => {
-  for (let key of keys) {
-    db.get(key).then(value => {
-      console.log(key)
-      console.log(value)
-  })
-  }
-})
-*/
 
 
 
 function update() {
   console.log("Updating!")
   db.list().then(keys => {
+    let i = 0
 
     for (let key of keys) {
+      i++
+      if(i === keys.length) {
+        console.log("Complete")
+      }
       if (key.startsWith("CMESSAGE") || key.startsWith("block")) {
         return;
       }
@@ -478,10 +459,14 @@ if(!guild.members.fetch(key)) return;
           })
         });
       })
+      
     }
+    
   });
 }
-
+db.list().then(keys => {
+  console.log(keys.length)
+})
 
 timer = setInterval(function() {
   update()
